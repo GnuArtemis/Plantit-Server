@@ -5,8 +5,8 @@ const db = require("../models");
 
 router.get("/", (req, res) => {
   // db.Plant.create({ name: "lily" }).then(dbPlant => res.send(dbPlant))
-  // db.Comment.create({ commentText: "lilies are better" })
-  // .then(({_id})=> db.Plant.findOneAndUpdate({_id:"5fab0b68f1fef94e9830b507"},{$push: {comments: _id}}, {new: true}))
+  // db.Comment.create({ commentText: "lilies are much better", userId: "5fab161898b4e684907e2705" })
+  // .then(({_id})=> db.Plant.findOneAndUpdate({username:"Alex"},{$push: {comments: _id}}, {new: true}))
   // .then(dbComment => console.log(dbComment))
 
     db.Plant.find({})
@@ -15,4 +15,11 @@ router.get("/", (req, res) => {
     })
 })
 
+router.get("/user", (req, res) => {
+  db.User.create({email: "test@test.test", password: "password"});
+
+  db.User.find({}).lean().then(dbUsers => {
+    res.json(dbUsers)
+  })
+})
 module.exports = router;
