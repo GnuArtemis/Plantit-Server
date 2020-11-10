@@ -7,7 +7,7 @@ const CommentSchema = new Schema({
         type: String,
         required: "What is the content of your comment?"
     },
-    userId:{
+    username:{
             type: String,
             required: "Who wrote the comment?"
     }
