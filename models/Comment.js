@@ -7,15 +7,17 @@ const CommentSchema = new Schema({
         type: String,
         required: "What is the content of your comment?"
     },
-    user:
+    userId:
     {
         type: Schema.Types.ObjectId,
-        ref: "User"
+        ref: "User",
+        required: "Who wrote the comment?"
     },
-    plant:
+    plantId:
     {
         type: Schema.Types.ObjectId,
-        ref: "Plant"
+        ref: "Plant",
+        required: "Which plant is this about?"
     }
 
 

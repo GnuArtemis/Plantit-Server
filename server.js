@@ -13,6 +13,8 @@ mongoose.connect(process.env.MONGODB_URI || "mongodb://localhost/dbPlantit", {
 
 //routes
 app.use(require('./routes/getRoutes.js'));
+app.use(require('./routes/postRoutes.js'));
+
 
 app.listen(PORT, function () {
     console.log(`Now listening on port: ${PORT}`);

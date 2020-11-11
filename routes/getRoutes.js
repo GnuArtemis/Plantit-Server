@@ -3,17 +3,17 @@ const axios = require("axios")
 const router = require("express").Router();
 const db = require("../models");
 
-router.get("/", (req, res) => {
-  // db.Plant.create({ name: "lily" }).then(dbPlant => res.send(dbPlant))
-  db.Comment.create({ commentText: "lilies are so much better", username: "Alexandria" })
-  .then(({_id})=> db.Plant.findOneAndUpdate({_id:"5fab0b68f1fef94e9830b507"},{$push: {comments: _id}}, {new: true}))
+router.get("/plant/:id", (req, res) => {
+  
+  db.Plant.findOne({_id:req.params.id})
+  .then(dbPlant=> {
+    db.Comment.find({plantId : req.params.id})
+    .populate("userId")
+    .then(dbComment=> {
+      res.send({dbPlant, dbComment})
+    },err=> {res.send(err)});
 
-  .then(dbComment => console.log(dbComment))
-
-    db.Plant.find({})
-    .populate("comments").lean().then(dbPlants=> {
-      res.json(dbPlants)
-    })
+  },err=> {res.send(err)});
 })
 
 router.get("/test", (req,res)=> {
