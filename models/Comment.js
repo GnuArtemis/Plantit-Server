@@ -7,12 +7,19 @@ const CommentSchema = new Schema({
         type: String,
         required: "What is the content of your comment?"
     },
-    user: [
-        {
-            type: Schema.Types.ObjectId,
-            ref: "User"
-        }
-    ],
+    user:
+    {
+        type: Schema.Types.ObjectId,
+        ref: "User"
+    },
+    plant:
+    {
+        type: Schema.Types.ObjectId,
+        ref: "Plant"
+    }
+
+
+
 })
 const Comment = mongoose.model("Comment", CommentSchema);
 

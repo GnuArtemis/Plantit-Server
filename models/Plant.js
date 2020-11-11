@@ -8,14 +8,7 @@ const PlantSchema = new Schema({
         trim: true,
         unique: true,
         required: "What is the name of your plant?"
-    },
-
-    comments: [
-        {
-            type: Schema.Types.ObjectId,
-            ref: "Comment"
-        }
-    ]
+    }
 })
 const Plant = mongoose.model("Plant", PlantSchema);
 
