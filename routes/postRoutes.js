@@ -1,9 +1,3 @@
-<<<<<<< HEAD
-const {Db} = require("mongodb");
-
-const router = require("express").Router();
-const db = require("../models");
-=======
 const axios = require("axios")
 const router = require("express").Router();
 const db = require("../models");
@@ -26,4 +20,3 @@ router.post("/comment",(req,res) => {
 
 
 module.exports = router;
->>>>>>> dev
