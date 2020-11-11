@@ -1,5 +1,6 @@
 const express = require('express');
 const mongoose = require("mongoose");
+const apiGetRoutes = require('./routes/getRoutes')
 
 const app = express();
 const PORT = process.env.PORT || 3001;
@@ -12,7 +13,7 @@ mongoose.connect(process.env.MONGODB_URI || "mongodb://localhost/dbPlantit", {
 })
 
 //routes
-app.use(require('./routes/getRoutes.js'));
+app.use(apiGetRoutes);
 
 app.listen(PORT, function () {
     console.log(`Now listening on port: ${PORT}`);
