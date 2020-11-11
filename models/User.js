@@ -19,7 +19,10 @@ const UserSchema = new Schema({
             ref: "Plant"
         }
     ],
-    myGarden: String
+    myGarden: {
+        type: String,
+        default:""
+    }
 })
 const User = mongoose.model("User", UserSchema);
 
