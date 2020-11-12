@@ -3,7 +3,6 @@ const axios = require("axios")
 const router = require("express").Router();
 const db = require("../models");
 const API = require("../utils/API")
-const Search = require("../utils/Search")
 
 router.get("/plant/:id", (req, res) => {
   db.Plant.findOne({_id:req.params.id})
@@ -13,7 +12,6 @@ router.get("/plant/:id", (req, res) => {
     .then(dbComment=> {
       res.send({dbPlant, dbComment})
     },err=> {res.send(err)});
-
   },err=> {res.send(err)});
 })
 
@@ -25,7 +23,7 @@ router.get("/test", (req,res)=> {
 
 router.get("/allplants", (req, res) => {
   console.log("Inside get route");
-  API().then((result) => {
+  API.getAllPlants().then((result) => {
     console.log("Inside the API call");
     res.json(result.data)
   })
@@ -37,7 +35,7 @@ router.get("/allplants", (req, res) => {
 // Search Trefle API for plant
 router.get("/api/search/:query", (req, res) => {
   console.log(req.params.query)
-  Search(req.params.query).then((result) => {
+  API.searchPlant(req.params.query).then((result) => {
     res.json(result.data)
   })
   .catch((err) => {
@@ -59,6 +57,16 @@ router.get("/search/:query", (req, res) => {
   db.Plant.find({ $text: { $search: req.params.query } })
   .then(results => {
     res.json(results)
+  })
+  .catch((err) => {
+    res.json(err)
+  })
+})
+
+router.get("/slug/:query", (req, res) => {
+  API.searchSlug(req.params.query)
+  .then(result => {
+    res.json(result.data)
   })
   .catch((err) => {
     res.json(err)
