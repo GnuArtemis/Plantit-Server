@@ -10,6 +10,8 @@ const PlantSchema = new Schema({
         required: "What is the name of your plant?"
     }
 })
+PlantSchema.index({name: 'text'});
+
 const Plant = mongoose.model("Plant", PlantSchema);
 
 module.exports = Plant;
