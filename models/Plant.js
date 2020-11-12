@@ -16,7 +16,7 @@ const PlantSchema = new Schema({
     //specifications.growth_habit
     ligneous_type: {
         type: String,
-        required: "What is the name of your plant?"
+        required: "What is the type of your plant?"
     },
     image_url: {
         type: String,
