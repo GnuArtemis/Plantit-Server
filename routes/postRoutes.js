@@ -10,6 +10,7 @@ router.post("/user",(req,res) => {
 router.post("/plant",(req,res) => {
     db.Plant.create({name: req.body.name})
     .then(dbPlant=> {res.send(dbPlant)},err=> {res.send(err)} )
+    /* jwt.sign to create token*/
 })
 
 router.post("/comment",(req,res) => {

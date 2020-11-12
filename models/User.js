@@ -23,6 +23,8 @@ const UserSchema = new Schema({
         type: String,
         default:""
     }
+
+    /*User.beforeCreate(do the thing with the salt and bycrypt) */
 })
 const User = mongoose.model("User", UserSchema);
 
