@@ -23,7 +23,7 @@ router.post("/plant",(req,res) => {
 })
 
 router.post("/comment",(req,res) => {
-    db.Comment.create({commentText: req.body.commentText, userId: "5fac47b2ae97575ef8b09023", plantId: "5fac482bb61a1085dcb0bd91"})
+    db.Comment.create({commentText: req.body.commentText, userId: "5faedf05d337fd9fc044f1f3", plantId: "5faed93cd337fd9fc042df4c"})
     .then(dbComment=> {res.send(dbComment)},err=> {res.status(500).send(err)} )
 
 } )
