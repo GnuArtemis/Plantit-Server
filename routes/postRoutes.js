@@ -23,7 +23,7 @@ router.post("/plant", (req, res) => {
     growth_habit: req.body.growth_habit,
     slug: req.body.slug
   })
-    .then(dbmyPlants => { res.send(dbPlant) }, err => { res.status(500).send(err) })
+    .then(dbPlant => { res.send(dbPlant) }, err => { res.status(500).send(err) })
   /* jwt.sign to create token*/
 })
 
