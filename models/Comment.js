@@ -19,10 +19,7 @@ const CommentSchema = new Schema({
         ref: "Plant",
         required: "Which plant is this about?"
     }
-
-
-
-})
+},{ timestamps: true })
 const Comment = mongoose.model("Comment", CommentSchema);
 
 module.exports = Comment;
