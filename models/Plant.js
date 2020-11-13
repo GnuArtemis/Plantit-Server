@@ -51,6 +51,8 @@ const PlantSchema = new Schema({
     killability:[Number]
     
 })
+PlantSchema.index({name: 'text'});
+
 const Plant = mongoose.model("Plant", PlantSchema);
 
 module.exports = Plant;
