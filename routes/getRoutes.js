@@ -21,6 +21,7 @@ router.get("/test", (req,res)=> {
   .catch(err => res.json(err))
 })
 
+// Get all plants from Trefle
 router.get("/allplants", (req, res) => {
   console.log("Inside get route");
   API.getAllPlants().then((result) => {
@@ -53,16 +54,24 @@ router.get("/plants", (req, res) => {
   })
 })
 
+//Search database for plants
 router.get("/search/:query", (req, res) => {
   db.Plant.find({ $text: { $search: req.params.query } })
   .then(results => {
-    res.json(results)
+    if (!Object.keys(results).length) {
+      console.log("no plant")
+      return res.json("no plant")
+      //Where you get the option to add a plant
+    } else {
+      res.json(results)
+    }
   })
   .catch((err) => {
     res.json(err)
   })
 })
 
+// Get info from API using the slug key
 router.get("/slug/:query", (req, res) => {
   API.searchSlug(req.params.query)
   .then(result => {
