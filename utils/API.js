@@ -7,8 +7,8 @@ const API = {
         return axios.get('https://trefle.io/api/v1/plants?token=' + usertoken)
     },
 
-    searchPlant: function (query,userToken) {
-        return axios.get('https://trefle.io/api/v1/plants/search?token=' +userToken + '&q=' + query)
+    searchPlant: function (query, userToken, page) {
+        return axios.get('https://trefle.io/api/v1/plants/search?token=' + userToken + '&q=' + query + '&page=' + page)
     },
 
     searchSlug: function (slug) {

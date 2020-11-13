@@ -39,10 +39,10 @@ router.get("/allplants/:usertoken", (req, res) => {
 })
 
 // Search Trefle API for plant
-router.get("/api/search/:query/:usertoken", (req, res) => {
+router.get("/api/search/:query/:usertoken/:page", (req, res) => {
   console.log(req.params.usertoken)
 
-  API.searchPlant(req.params.query, req.params.usertoken).then((result) => {
+  API.searchPlant(req.params.query, req.params.usertoken, req.params.page).then((result) => {
     const dataFormatted = API.formatSearchResults(result.data);
     res.json(dataFormatted)
   })
