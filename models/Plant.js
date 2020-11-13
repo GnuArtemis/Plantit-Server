@@ -51,7 +51,7 @@ const PlantSchema = new Schema({
     killability:[Number]
     
 })
-PlantSchema.index({name: 'text', scientific_name: 'text'});
+PlantSchema.index({common_name: 'text', scientific_name: 'text'});
 
 const Plant = mongoose.model("Plant", PlantSchema);
 
