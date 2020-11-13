@@ -101,10 +101,12 @@ router.get("/myplants", (req, res) => {
     })
 })
 
-router.get("/user", (req, res) => {
+router.get("/user/:id", (req, res) => {
   // db.User.create({email: "test@test.test", password: "password"});
 
-  db.User.find({}).lean().then(dbUsers => {
+  db.User.findOne({_id: req.params.id})
+  .populate("myPlants")
+  .lean().then(dbUsers => {
     res.json(dbUsers)
   })
 })
