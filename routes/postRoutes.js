@@ -8,7 +8,7 @@ router.use(cors())
 
 router.post("/user",(req,res) => {
     db.User.create({email: req.body.email, password: req.body.password})
-    .then(dbUser=> {res.send(dbUser)},err=> {res.send(err)});
+    .then(dbUser=> {res.send(dbUser)},err=> {res.status(500).send(err)});
 })
 
 router.post("/plant",(req,res) => {
@@ -16,15 +16,15 @@ router.post("/plant",(req,res) => {
         common_name: req.body.common_name,
         scientific_name: req.body.scientific_name,
         growth_habit: req.body.growth_habit,
-        
+        slug: req.body.slug
     })
-    .then(dbPlant=> {res.send(dbPlant)},err=> {res.send(err)} )
+    .then(dbPlant=> {res.send(dbPlant)},err=> {res.status(500).send(err)} )
     /* jwt.sign to create token*/
 })
 
 router.post("/comment",(req,res) => {
     db.Comment.create({commentText: req.body.commentText, userId: "5fac47b2ae97575ef8b09023", plantId: "5fac482bb61a1085dcb0bd91"})
-    .then(dbComment=> {res.send(dbComment)},err=> {res.send(err)} )
+    .then(dbComment=> {res.send(dbComment)},err=> {res.status(500).send(err)} )
 
 } )
 

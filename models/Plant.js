@@ -13,6 +13,11 @@ const PlantSchema = new Schema({
         trim: true,
         required: "What is the name of your plant?"
     },
+    slug: {
+        type: String,
+        unique: true,
+        required: "What is the unique identifier of your plant?"
+    },
     //specifications.growth_habit
     growth_habit: {
         type: String,
@@ -50,8 +55,8 @@ const PlantSchema = new Schema({
     //Voting system? can't get from trefle
     killability:[Number]
     
-})
-PlantSchema.index({name: 'text', scientific_name: 'text'});
+},{ timestamps: true })
+PlantSchema.index({common_name: 'text', scientific_name: 'text'});
 
 const Plant = mongoose.model("Plant", PlantSchema);
 
