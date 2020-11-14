@@ -11,6 +11,10 @@ router.use(cors())
 router.get("/plant/:id", (req, res) => {
   db.Plant.findOne({ _id: req.params.id })
     .then(dbPlant => {
+      if(dbPlant === null) {
+        res.send("doesn't exist yet")
+      }
+
       db.Comment.find({ plantId: req.params.id })
         .populate("userId")
         .then(dbComment => {
@@ -44,6 +48,7 @@ router.get("/api/search/:query/:usertoken/:page", (req, res) => {
 
   API.searchPlant(req.params.query, req.params.usertoken, req.params.page).then((result) => {
     const dataFormatted = API.formatSearchResults(result.data);
+    console.log(dataFormatted)
     res.json(dataFormatted)
   })
   .catch((err) => {
@@ -80,8 +85,8 @@ router.get("/plants/search/:query", (req, res) => {
 })
 
 // Get info from API using the slug key
-router.get("/slug/:query", (req, res) => {
-  API.searchSlug(req.params.query)
+router.get("/api/slug/:query/:usertoken/info", (req, res) => {
+  API.searchSlug(req.params.query, req.params.usertoken)
     .then(result => {
       res.json(result.data)
     })

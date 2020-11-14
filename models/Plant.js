@@ -21,7 +21,6 @@ const PlantSchema = new Schema({
     //specifications.growth_habit
     growth_habit: {
         type: String,
-        required: "What is the type of your plant?"
     },
     image_url: {
         type: String,
@@ -47,9 +46,9 @@ const PlantSchema = new Schema({
     //growth.light
     light: Number,
     //growth.sowing OR all the growth soil_
-    Sowing: String,
+    sowing: [],
     //WHERE sources.name === USDA
-    USDA: String,
+    sources: [],
     //growth.growth_months
     growth_months:[String],
     //Voting system? can't get from trefle

@@ -3,9 +3,14 @@ const mongoose = require("mongoose")
 const Schema = mongoose.Schema;
 
 const UserSchema = new Schema({
-    email: {
+    username: {
         type: String,
         trim: true,
+        unique: true,
+        required: "What is your username?"
+    },
+    email: {
+        type: String,
         unique: true,
         required: "What is your email address?"
     },

@@ -1,5 +1,4 @@
 const axios = require("axios");
-const fetch = require('node-fetch');
 
 const API = {
 
@@ -7,15 +6,15 @@ const API = {
         return axios.get('https://trefle.io/api/v1/plants?token=' + usertoken)
     },
 
-    searchPlant: function (query, userToken, page) {
-        return axios.get('https://trefle.io/api/v1/plants/search?token=' + userToken + '&q=' + query + '&page=' + page)
+    searchPlant: function (query, usertoken, page) {
+        return axios.get('https://trefle.io/api/v1/plants/search?token=' + usertoken + '&q=' + query + '&page=' + page)
     },
 
-    searchSlug: function (slug) {
-        return axios.get('https://trefle.io/api/v1/species/' + slug + '?token=Skz55F34QUIf4x5I-NbiZdMrmWgIUElcEwJHPncRbkA')
+    searchSlug: function (slug,usertoken) {
+        return axios.get('https://trefle.io/api/v1/species/' + slug + '?token=' + usertoken)
     },
 
-    formatSearchResults: function({data}) {
+    formatSearchResults: function ({ data }) {
         // console.log(data)
         const allData = [];
         data.forEach(element => {
@@ -23,6 +22,7 @@ const API = {
             dataFormatted.common_name = element.common_name;
             dataFormatted.scientific_name = element.scientific_name;
             dataFormatted.image_url = element.image_url;
+            dataFormatted.slug = element.slug
             allData.push(dataFormatted)
         })
         return allData;
@@ -31,20 +31,17 @@ const API = {
     fetchToken: async function () {
 
         const params = {
-            origin: 'http://localhost:3000',
-            token: 'Skz55F34QUIf4x5I-NbiZdMrmWgIUElcEwJHPncRbkA'
-          }
-        const response = await fetch(
-            'https://trefle.io/api/auth/claim', {
-              method: 'post',
-              body: JSON.stringify(params),
-              headers: { 'Content-Type': 'application/json' }
-            });
-          const json = await response.json();
-        //   console.log(json);
-          return json;
+            origin: 'http://localhost:3000/',
+            // ip: user's api
+            token: 'NpbVZNazanTbq6IdZi-WePXi9AGzuqXARezyDNnW2bA'
+        }
+        return axios({
+            method: "post",
+            url: "https://trefle.io/api/auth/claim",
+            data: params,
+        })
     }
-    
+
 }
 
 module.exports = API
