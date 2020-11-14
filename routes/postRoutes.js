@@ -12,8 +12,8 @@ router.post("/user", (req, res) => {
 })
 
 router.post("/myplants/create", (req, res) => {
-  db.User.findOneAndUpdate({_id:req.body.userId},{$push: {myPlants: req.body.plantId}},{new: true})
-  .then(dbmyPlants => { res.send(dbmyPlants) }, err => { res.status(500).send(err) })
+  db.User.findOneAndUpdate({ _id: req.body.userId }, { $push: { myPlants: req.body.plantId } }, { new: true })
+    .then(dbmyPlants => { res.send(dbmyPlants) }, err => { res.status(500).send(err) })
 })
 
 router.post("/plant", (req, res) => {
@@ -28,7 +28,7 @@ router.post("/plant", (req, res) => {
 })
 
 router.post("/comment", (req, res) => {
-  db.Comment.create({ commentText: req.body.commentText, userId: "5fac47b2ae97575ef8b09023", plantId: "5fac482bb61a1085dcb0bd91" })
+  db.Comment.create({ commentText: req.body.commentText, userId: req.body.userId, plantId: req.body.plantId })
     .then(dbComment => { res.send(dbComment) }, err => { res.status(500).send(err) })
 
 })
@@ -38,29 +38,41 @@ router.post("/token", (req, res) => {
   // The parameters for our POST request
   API.fetchToken()
     .then(response => {
-      console.log(response)
-      res.json(response)
-    });
-
-
-
-
-  // const params = {
-  //   origin: 'http://localhost:3000/',
-  //   // ip: user's api
-  //   token: 'NpbVZNazanTbq6IdZi-WePXi9AGzuqXARezyDNnW2bA'
-  // }
-  //   axios.get({
-  //     method: "post",
-  //     baseURL: "https://trefle.io/api/auth/claim",
-  //     body: JSON.stringify(params),
-  //     headers: { 'Content-Type': 'application/json' }
-
-  //   }).then (result => {
-  //     res.send(result)
-  //   }, err => res.send(err))
+      console.log(response.data)
+      res.json(response.data)
+    }, err => res.send(err));
 })
 
-
+// Get info from API using the slug key, then post to the database
+router.post("/api/slug/:query/:usertoken", (req, res) => {
+  API.searchSlug(req.params.query, req.params.usertoken)
+    .then((result) => {
+      plantData = result.data.data;
+      console.log(plantData)
+      db.Plant.create({
+        common_name: plantData.common_name,
+        scientific_name: plantData.scientific_name,
+        growth_habit: plantData.specifications.growth_habit,
+        slug: plantData.slug,
+        other_names: plantData.common_names.en,
+        image_url: plantData.image_url,
+        native: plantData.distribution.native,
+        average_height: plantData.specifications.average_height.cm,
+        toxicity: plantData.specifications.toxicity,
+        growth: plantData.growth.description,
+        ph: [plantData.growth.ph_maximum, plantData.growth.ph_minimum],
+        watering: [plantData.growth.minimum_precipitation.mm, plantData.growth.maximum_precipitation.mm],
+        temperature: [plantData.growth.minimum_temperature.deg_f, plantData.growth.maximum_temperature.deg_f],
+        light: plantData.growth.light,
+        sowing: [plantData.growth.sowing, plantData.growth.soil_nutriments, plantData.growth.soil_texture],
+        sources: plantData.sources,
+        growth_months: plantData.growth.growth_months
+      })
+        .then(dbPlant => { res.send(dbPlant) }, err => { res.status(500).send(err) })
+    })
+    .catch((err) => {
+      res.json(err)
+    })
+})
 
 module.exports = router;
