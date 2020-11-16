@@ -7,7 +7,7 @@ const cors = require("cors")
 router.use(cors())
 
 router.post("/user", (req, res) => {
-  db.User.create({ email: req.body.email, password: req.body.password })
+  db.User.create({ email: req.body.email, password: req.body.password, username: req.body.username })
     .then(dbUser => { res.send(dbUser) }, err => { res.status(500).send(err) });
 })
 
