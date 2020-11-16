@@ -8,8 +8,8 @@ const cors = require("cors")
 router.use(cors())
 
 
-router.get("/plant/:id", (req, res) => {
-  db.Plant.findOne({ _id: req.params.id })
+router.get("/plant/:slug", (req, res) => {
+  db.Plant.findOne({ slug: req.params.slug })
     .then(dbPlant => {
       if(dbPlant === null) {
         res.send("doesn't exist yet")
