@@ -5,22 +5,26 @@ const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const cors = require("cors");
 const API = require("../utils/API");
-const auth = require("../middleware/auth")
 require("dotenv").config()
 
 router.use(cors())
 
 // Checks user authentication
-
-router.get("/me", auth, async (req, res) => {
-    try {
-      // request.user is getting fetched from Middleware after token authentication
-      const user = await User.findOne({email: req.body.email});
-      res.json(user);
-    } catch (e) {
-      res.send({ message: "Error in Fetching user" });
+const checkAuthStatus = (request, res) => {
+    if (!request.headers.authorization) {
+        return false
     }
-  });
+    const token = request.headers.authorization.split(" ")[1]
+    const loggedInUser = jwt.verify(token, process.env.JWT_SECRET, (err, data) => {
+        if (err) {
+           return false;
+        }
+        else {
+            return data
+        }
+    });
+    return loggedInUser
+}
 
 // Login Route
 router.post("/login", async (req, res) => {
@@ -48,24 +52,22 @@ router.post("/login", async (req, res) => {
       })
       .catch(function(error){
           console.log("Error authenticating user: ");
-          console.log(error);
       });
 })
     
 // Gets My Plants with user authentication
 
 router.get("/myplants", (req, res) => {
-    const loggedInUser = checkAuthStatus(req);
-    console.log(loggedInUser);
+    const loggedInUser = checkAuthStatus(req)
     if (!loggedInUser) {
         return res.status(401).send("invalid token")
     } else {
-        db.User.find({ username: loggedInUser.username }, { myPlants: 1 })
+        db.User.find({ username: loggedInUser.username })
             .then((result) => {
-             res.json(result)
+             return res.json(result)
          })
          .catch((err) => {
-            res.json(err)
+            return res.json(err)
         })
     }
   })
