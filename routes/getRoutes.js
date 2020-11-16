@@ -71,7 +71,7 @@ router.get("/plants", (req, res) => {
 router.get("/plants/search/:query", (req, res) => {
   db.Plant.find({ $text: { $search: req.params.query } })
     .then(results => {
-      if (!Object.keys(results).length) {
+      if (results.name === "MongoError") {
         console.log("no plant")
         return res.send(null)
         //Where you get the option to add a plant
@@ -96,15 +96,15 @@ router.get("/api/slug/:query/:usertoken/info", (req, res) => {
 })
 
 //needs to be updated with user login key
-router.get("/myplants", (req, res) => {
-  db.User.find({ User: "1" }, { myPlants: 1 })
-    .then((result) => {
-      res.json(result)
-    })
-    .catch((err) => {
-      res.json(err)
-    })
-})
+// router.get("/myplants", (req, res) => {
+//   db.User.find({ User: "1" }, { myPlants: 1 })
+//     .then((result) => {
+//       res.json(result)
+//     })
+//     .catch((err) => {
+//       res.json(err)
+//     })
+// })
 
 router.get("/user/:id", (req, res) => {
   // db.User.create({email: "test@test.test", password: "password"});

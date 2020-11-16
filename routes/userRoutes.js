@@ -5,29 +5,22 @@ const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const cors = require("cors");
 const API = require("../utils/API");
+const auth = require("../middleware/auth")
 require("dotenv").config()
 
 router.use(cors())
 
 // Checks user authentication
-const checkAuthStatus = request => {
-    console.log(request.headers);
-    if (!request.headers.authorization) {
-        return false
+
+router.get("/me", auth, async (req, res) => {
+    try {
+      // request.user is getting fetched from Middleware after token authentication
+      const user = await User.findOne({email: req.body.email});
+      res.json(user);
+    } catch (e) {
+      res.send({ message: "Error in Fetching user" });
     }
-    const token = request.headers.authorization.split(" ")[1]
-    console.log(token);
-    const loggedInUser = jwt.verify(token, process.env.JWT_SECRET, (err, data) => {
-        if (err) {
-            return false
-        }
-        else {
-            return data
-        }
-    });
-    console.log(loggedInUser)
-    return loggedInUser
-}
+  });
 
 // Login Route
 router.post("/login", async (req, res) => {
