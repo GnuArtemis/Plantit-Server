@@ -9,6 +9,27 @@ require("dotenv").config()
 
 router.use(cors())
 
+// Checks user authentication
+const checkAuthStatus = request => {
+    console.log(request.headers);
+    if (!request.headers.authorization) {
+        return false
+    }
+    const token = request.headers.authorization.split(" ")[1]
+    console.log(token);
+    const loggedInUser = jwt.verify(token, process.env.JWT_SECRET, (err, data) => {
+        if (err) {
+            return false
+        }
+        else {
+            return data
+        }
+    });
+    console.log(loggedInUser)
+    return loggedInUser
+}
+
+// Login Route
 router.post("/login", async (req, res) => {
     const foundUser = db.User.findOne({email: req.body.email})
       .then(foundUser => {
@@ -38,4 +59,23 @@ router.post("/login", async (req, res) => {
       });
 })
     
+// Gets My Plants with user authentication
+
+router.get("/myplants", (req, res) => {
+    const loggedInUser = checkAuthStatus(req);
+    console.log(loggedInUser);
+    if (!loggedInUser) {
+        return res.status(401).send("invalid token")
+    } else {
+        db.User.find({ username: loggedInUser.username }, { myPlants: 1 })
+            .then((result) => {
+             res.json(result)
+         })
+         .catch((err) => {
+            res.json(err)
+        })
+    }
+  })
+
+
 module.exports = router;
