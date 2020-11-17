@@ -28,29 +28,33 @@ const checkAuthStatus = (request, res) => {
 
 // Login Route
 router.post("/login", async (req, res) => {
-    const foundUser = db.User.findOne({email: req.body.email})
-      .then(foundUser => {
+    db.User.findOne({email: req.body.email})
+      .then(async foundUser => {
           if (!foundUser) {
             return res.status(404).send("USER NOT FOUND")
           } else {
-            return bcrypt.compare(req.body.password, foundUser.password);
+            return { samePassword: await bcrypt.compare(req.body.password, foundUser.password), 
+                    foundUser }
           } 
       })
-      .then(function(samePassword) {
-          if(!samePassword) {
+      .then(function(validUser) {
+          if(!validUser.samePassword) {
               res.status(403).send("wrong password");
           } else {
               const userInfo = {
-                  email: foundUser.email,
-                  username: foundUser.username,
-                  password: foundUser.password,
+                  email: validUser.foundUser.email,
+                  username: validUser.foundUser.username,
+                  id: validUser.foundUser._id,
+                  myPlants: validUser.foundUser.myPlants,
+                  myGarden: validUser.foundUser.myGarden,
                   userToken: API.fetchToken()
               }
               const token = jwt.sign(userInfo, process.env.JWT_SECRET, { expiresIn: "2h" });
-              return res.status(200).json({ token: token })
-          }
-      })
+              return res.status(200).json({ token: token, userInfo})
+         }
+      }) 
       .catch(function(error){
+          console.log(error)
           console.log("Error authenticating user: ");
       });
 })

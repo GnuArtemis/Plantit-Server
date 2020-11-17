@@ -4,6 +4,7 @@ const router = require("express").Router();
 const db = require("../models");
 const API = require("../utils/API")
 const cors = require("cors")
+const mongoose = require("mongoose")
 
 router.use(cors())
 
@@ -127,11 +128,15 @@ router.get("/myplants", (req, res) => {
 
 router.get("/user/:id", (req, res) => {
   // db.User.create({email: "test@test.test", password: "password"});
-
-  db.User.findOne({_id: req.params.id})
-  .populate("myPlants")
+  console.log(req.params.id)
+  console.log(mongoose.Types.ObjectId.isValid(req.params.id));
+  db.User.findById(req.params.id)
   .lean().then(dbUsers => {
     res.json(dbUsers)
+    console.log(dbUsers)
+  })
+  .catch(err => {
+    console.log(err)
   })
 })
 module.exports = router;
