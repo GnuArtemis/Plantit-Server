@@ -15,13 +15,31 @@ router.get("/plant/:slug", (req, res) => {
       if(dbPlant === null) {
         res.send("doesn't exist yet")
       }
-
-      db.Comment.find({ plantId: req.params.id })
+      db.Comment.find({ plantId: dbPlant._id })
         .populate("userId")
         .then(dbComment => {
           res.send({ dbPlant, dbComment })
         }, err => { res.send(err) });
     }, err => { res.send(err) });
+})
+
+router.get('/findByComments',(req, res) => {
+  db.Comment
+  .aggregate([
+    {$sortByCount: "$plantId"},
+    {$lookup: {
+      from: "plants", 
+      localField: "_id",
+      foreignField: "_id",
+      as: "plantInfo"
+    }},
+
+])
+  .limit(3)
+  .then(dbComment => {
+    console.log(dbComment)
+    res.send(dbComment)
+  })
 })
 
 // router.get("/test", (req, res) => {
@@ -71,7 +89,7 @@ router.get("/plants", (req, res) => {
 router.get("/plants/search/:query", (req, res) => {
   db.Plant.find({ $text: { $search: req.params.query } })
     .then(results => {
-      console.log(results)
+      // console.log(results)
       if (results.length===0) {
         console.log("no plant")
         return res.send(null)
