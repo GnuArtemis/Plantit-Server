@@ -131,6 +131,7 @@ router.get("/user/:id", (req, res) => {
   console.log(req.params.id)
   console.log(mongoose.Types.ObjectId.isValid(req.params.id));
   db.User.findById(req.params.id)
+  .populate("myPlants")
   .lean().then(dbUsers => {
     res.json(dbUsers)
     console.log(dbUsers)
