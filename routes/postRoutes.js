@@ -47,8 +47,12 @@ router.post("/plant", (req, res) => {
 })
 
 router.post("/comment", (req, res) => {
-  db.Comment.create({ commentText: req.body.commentText, userId: req.body.userId, plantId: req.body.plantId })
-    .then(dbComment => { res.send(dbComment) }, err => { res.status(500).send(err) })
+  db.Comment.create({ 
+    commentText: req.body.commentText, 
+    userId: req.body.userId, 
+    plantId: req.body.plantId })
+    .then(dbComment => { res.send(dbComment) }, 
+      err => { res.status(500).send(err) })
 
 })
 
