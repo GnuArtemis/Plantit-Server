@@ -22,7 +22,7 @@ router.post("/user", (req, res) => {
     return res.status(200).json({ token: token, userInfo})
   })
   .catch(err => {
-    console.log(err)
+    // console.log(err)
   })
 })
 
@@ -61,7 +61,7 @@ router.post("/token", (req, res) => {
   // The parameters for our POST request
   API.fetchToken()
     .then(response => {
-      console.log(response.data)
+      // console.log(response.data)
       res.json(response.data)
     }, err => res.send(err));
 })
@@ -71,7 +71,7 @@ router.post("/api/slug/:query/:usertoken", (req, res) => {
   API.searchSlug(req.params.query, req.params.usertoken)
     .then((result) => {
       plantData = result.data.data;
-      console.log(plantData)
+      // console.log(plantData)
       db.Plant.create({
         common_name: plantData.common_name,
         scientific_name: plantData.scientific_name,
