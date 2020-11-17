@@ -2,13 +2,28 @@ const axios = require("axios")
 const router = require("express").Router();
 const db = require("../models");
 const API = require("../utils/API");
+const jwt = require("jsonwebtoken")
 const cors = require("cors")
 
 router.use(cors())
 
 router.post("/user", (req, res) => {
-  db.User.create({ email: req.body.email, password: req.body.password, username: req.body.username })
-    .then(dbUser => { res.send(dbUser) }, err => { res.status(500).send(err) });
+  db.User.create({ email: req.body.email, password: req.body.password, username: req.body.username, userToken: API.fetchToken() })
+    .then(dbUser =>  {
+      const userInfo = {
+        email: dbUser.email,
+        username: dbUser.username,
+        id: dbUser._id,
+        myPlants: dbUser.myPlants,
+        myGarden: dbUser.myGarden,
+        userToken: API.fetchToken()
+    }
+    const token = jwt.sign(userInfo, process.env.JWT_SECRET, { expiresIn: "2h" });
+    return res.status(200).json({ token: token, userInfo})
+  })
+  .catch(err => {
+    console.log(err)
+  })
 })
 
 router.post("/myplants/create", (req, res) => {
