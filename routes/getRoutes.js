@@ -16,6 +16,7 @@ router.get("/plant/:slug", (req, res) => {
         res.send("doesn't exist yet")
       }
       db.Comment.find({ plantId: dbPlant._id })
+        .sort({"updatedAt" : -1})
         .populate("userId")
         .then(dbComment => {
           res.send({ dbPlant, dbComment })
