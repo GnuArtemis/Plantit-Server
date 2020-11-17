@@ -22,6 +22,25 @@ router.get("/plant/:slug", (req, res) => {
     }, err => { res.send(err) });
 })
 
+router.get('/findByComments',(req, res) => {
+  db.Comment
+  .aggregate([
+    {$sortByCount: "$plantId"},
+    {$lookup: {
+      from: "plants", 
+      localField: "_id",
+      foreignField: "_id",
+      as: "plantInfo"
+    }},
+
+])
+  .limit(3)
+  .then(dbComment => {
+    console.log(dbComment)
+    res.send(dbComment)
+  })
+})
+
 // router.get("/test", (req, res) => {
 //   axios.get("https://trefle.io/api/v1/species/sorbus-aucuparia?token=eyJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjo5MzczLCJvcmlnaW4iOiJodHRwOi8vbG9jYWxob3N0OjMwMDAvIiwiaXAiOm51bGwsImV4cGlyZSI6IjIwMjAtMTEtMTQgMDU6MDg6MTYgKzAwMDAiLCJleHAiOjE2MDUzMzA0OTZ9.lAGSUrloI3sOj-Z-7mHwxhkjkaPTJGLayoE53b85IZI")
 //     .then(response => res.send(response.data))
@@ -69,7 +88,7 @@ router.get("/plants", (req, res) => {
 router.get("/plants/search/:query", (req, res) => {
   db.Plant.find({ $text: { $search: req.params.query } })
     .then(results => {
-      console.log(results)
+      // console.log(results)
       if (results.length===0) {
         console.log("no plant")
         return res.send(null)
