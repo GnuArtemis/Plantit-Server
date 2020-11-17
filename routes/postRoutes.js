@@ -12,8 +12,12 @@ router.post("/user", (req, res) => {
 })
 
 router.post("/myplants/create", (req, res) => {
-  db.User.findOneAndUpdate({ _id: req.body.userId }, { $push: { myPlants: req.body.plantId } }, { new: true })
-    .then(dbmyPlants => { res.send(dbmyPlants) }, err => { res.status(500).send(err) })
+  db.User.findOneAndUpdate(
+    { _id: req.body.userId }, 
+    { $push: { myPlants: req.body.plantId } }, 
+    { new: true }
+    ).then(dbmyPlants => { res.send(dbmyPlants) },
+    err => { res.status(500).send(err) })
 })
 
 router.post("/plant", (req, res) => {

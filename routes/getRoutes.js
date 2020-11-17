@@ -23,11 +23,11 @@ router.get("/plant/:slug", (req, res) => {
     }, err => { res.send(err) });
 })
 
-router.get("/test", (req, res) => {
-  axios.get("https://trefle.io/api/v1/species/sorbus-aucuparia?token=eyJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjo5MzczLCJvcmlnaW4iOiJodHRwOi8vbG9jYWxob3N0OjMwMDAvIiwiaXAiOm51bGwsImV4cGlyZSI6IjIwMjAtMTEtMTQgMDU6MDg6MTYgKzAwMDAiLCJleHAiOjE2MDUzMzA0OTZ9.lAGSUrloI3sOj-Z-7mHwxhkjkaPTJGLayoE53b85IZI")
-    .then(response => res.send(response.data))
-    .catch(err => res.json(err))
-})
+// router.get("/test", (req, res) => {
+//   axios.get("https://trefle.io/api/v1/species/sorbus-aucuparia?token=eyJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjo5MzczLCJvcmlnaW4iOiJodHRwOi8vbG9jYWxob3N0OjMwMDAvIiwiaXAiOm51bGwsImV4cGlyZSI6IjIwMjAtMTEtMTQgMDU6MDg6MTYgKzAwMDAiLCJleHAiOjE2MDUzMzA0OTZ9.lAGSUrloI3sOj-Z-7mHwxhkjkaPTJGLayoE53b85IZI")
+//     .then(response => res.send(response.data))
+//     .catch(err => res.json(err))
+// })
 
 // Get all plants from Trefle
 router.get("/allplants/:usertoken", (req, res) => {
@@ -48,7 +48,6 @@ router.get("/api/search/:query/:usertoken/:page", (req, res) => {
 
   API.searchPlant(req.params.query, req.params.usertoken, req.params.page).then((result) => {
     const dataFormatted = API.formatSearchResults(result.data);
-    console.log(dataFormatted)
     res.json(dataFormatted)
   })
   .catch((err) => {
@@ -71,11 +70,13 @@ router.get("/plants", (req, res) => {
 router.get("/plants/search/:query", (req, res) => {
   db.Plant.find({ $text: { $search: req.params.query } })
     .then(results => {
-      if (results.name === "MongoError") {
+      console.log(results)
+      if (results.length===0) {
         console.log("no plant")
         return res.send(null)
         //Where you get the option to add a plant
       } else {
+        console.log("found some plants")
         res.json(results)
       }
     })
@@ -96,15 +97,15 @@ router.get("/api/slug/:query/:usertoken/info", (req, res) => {
 })
 
 //needs to be updated with user login key
-// router.get("/myplants", (req, res) => {
-//   db.User.find({ User: "1" }, { myPlants: 1 })
-//     .then((result) => {
-//       res.json(result)
-//     })
-//     .catch((err) => {
-//       res.json(err)
-//     })
-// })
+router.get("/myplants", (req, res) => {
+  db.User.find({ User: "1" }, { myPlants: 1 })
+    .then((result) => {
+      res.json(result)
+    })
+    .catch((err) => {
+      res.json(err)
+    })
+})
 
 router.get("/user/:id", (req, res) => {
   // db.User.create({email: "test@test.test", password: "password"});
