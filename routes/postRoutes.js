@@ -16,6 +16,7 @@ router.post("/user", (req, res) => {
         id: dbUser._id,
         myPlants: dbUser.myPlants,
         myGarden: dbUser.myGarden,
+        myGardenImg: dbUser.myGardenImg,
         userToken: API.fetchToken()
     }
     const token = jwt.sign(userInfo, process.env.JWT_SECRET, { expiresIn: "2h" });
