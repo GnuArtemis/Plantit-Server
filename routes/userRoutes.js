@@ -74,7 +74,19 @@ router.get("/myplants", (req, res) => {
             return res.json(err)
         })
     }
-  })
+})
+
+router.put("/user/:id/garden", (req,res) => {
+    
+        db.User.findOneAndUpdate({ _id: req.params.id }, {myGarden:req.body.myGarden,myGardenImg:req.body.myGardenImg})
+            .then((result) => {
+             return res.json(result)
+        })
+         .catch((err) => {
+            return res.json(err)
+        })
+    
+})
 
 
 module.exports = router;

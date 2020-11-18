@@ -31,6 +31,10 @@ const UserSchema = new Schema({
     myGarden: {
         type: String,
         default:""
+    },
+    myGardenImg: {
+        type: String,
+        default:""
     }
 })
 
