@@ -64,28 +64,19 @@ router.post("/login", async (req, res) => {
 
 
 
+
+
+router.put("/user/:id/garden", (req,res) => {
     
-// Gets My Plants with user authentication
-
-// router.get("/myplants", (req, res) => {
-//    const loggedInUser = checkAuthStatus(req)
-//     if (!loggedInUser) {
-//         console.log("no user")
-//         return res.status(401).send("invalid token")
-//     } else {
-//         db.User.findById(loggedInUser.id)
-//         .populate("myPlants")
-//             .lean()
-//             .then((result) => {
-//              return res.json(result)
-//          })
-//          .catch((err) => {
-//             return res.json(err)
-//         })
-//     }
-//   })
-
-
+        db.User.findOneAndUpdate({ _id: req.params.id }, {myGarden:req.body.myGarden,myGardenImg:req.body.myGardenImg})
+            .then((result) => {
+             return res.json(result)
+        })
+         .catch((err) => {
+            return res.json(err)
+        })
+    
+})
 
 
 module.exports = router;
