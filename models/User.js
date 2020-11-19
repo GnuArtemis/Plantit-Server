@@ -35,7 +35,20 @@ const UserSchema = new Schema({
     myGardenImg: {
         type: String,
         default:""
-    }
+    }, 
+    location: {
+        type: String,
+        default:""
+    }, 
+    skills: {
+        type: String,
+        default:""
+    }, 
+    interests: {
+        type: String,
+        default:""
+    }, 
+
 })
 
 UserSchema.pre('save', function(next) {
