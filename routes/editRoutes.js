@@ -8,11 +8,18 @@ const mongoose = require("mongoose")
 
 router.use(cors())
 
-router.put("/myplants/:userId/:plantId", (req,res) => {
-    db.User.findByIdAndUpdate(req.params.userId,{$pull:{myPlants: req.params.plantId}
+router.put("/myplants/delete", (req,res) => {
+    db.User.findByIdAndUpdate(req.body.userId,{$pull:{myPlants: req.body.plantId}
     })
     .lean().then(dbUser => {
         res.json(dbUser)
+    })
+})
+
+router.put("/comment/edit",(req,res)=> {
+    db.Comment.findByIdAndUpdate(req.body.commentId, {$set: {commentText: req.body.commentUpdate}})
+    .lean().then(dbComment => {
+        res.json(dbComment)
     })
 })
 
