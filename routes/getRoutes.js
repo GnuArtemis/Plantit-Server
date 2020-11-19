@@ -16,7 +16,6 @@ router.get("/plant/:slug", (req, res) => {
         res.send("doesn't exist yet")
       }
       db.Comment.find({ plantId: dbPlant._id })
-        .sort({"updatedAt" : -1})
         .populate("userId")
         .then(dbComment => {
           res.send({ dbPlant, dbComment })
@@ -38,7 +37,7 @@ router.get('/findByComments',(req, res) => {
 ])
   .limit(3)
   .then(dbComment => {
-    // console.log(dbComment)
+    console.log(dbComment)
     res.send(dbComment)
   })
 })
@@ -51,10 +50,10 @@ router.get('/findByComments',(req, res) => {
 
 // Get all plants from Trefle
 router.get("/allplants/:usertoken", (req, res) => {
-  // console.log("Inside get route");
+  console.log("Inside get route");
   API.getAllPlants(req.params.usertoken)
   .then((result) => {
-    // console.log("Inside the API call");
+    console.log("Inside the API call");
     res.json(result.data)
   })
     .catch((err) => {
@@ -64,7 +63,7 @@ router.get("/allplants/:usertoken", (req, res) => {
 
 // Search Trefle API for plant
 router.get("/api/search/:query/:usertoken/:page", (req, res) => {
-  // console.log(req.params.usertoken)
+  console.log(req.params.usertoken)
 
   API.searchPlant(req.params.query, req.params.usertoken, req.params.page).then((result) => {
     const dataFormatted = API.formatSearchResults(result.data);
@@ -92,11 +91,11 @@ router.get("/plants/search/:query", (req, res) => {
     .then(results => {
       // console.log(results)
       if (results.length===0) {
-        // console.log("no plant")
+        console.log("no plant")
         return res.send(null)
         //Where you get the option to add a plant
       } else {
-        // console.log("found some plants")
+        console.log("found some plants")
         res.json(results)
       }
     })
@@ -129,18 +128,32 @@ router.get("/myplants", (req, res) => {
 
 router.get("/user/:id", (req, res) => {
   // db.User.create({email: "test@test.test", password: "password"});
-  // console.log(req.params.id)
-  // console.log(mongoose.Types.ObjectId.isValid(req.params.id));
   db.User.findById(req.params.id)
   .populate("myPlants")
   .lean().then(dbUsers => {
     res.json(dbUsers)
-    // console.log(dbUsers)
+    console.log(dbUsers)
   })
   .catch(err => {
-    // console.log(err)
+    console.log(err)
   })
 })
+
+router.get("/myplants/:id", (req, res) => {
+  if (req.params.id) {
+    db.User.findById(req.params.id)
+    .populate("myPlants")
+    .lean().then(user => {
+      res.json(user.myPlants)
+    }).catch(err => {
+      console.log(err)
+    })
+  } else {
+    return res.status(404).send("user not found")
+  }
+})
+
+
 module.exports = router;
 
 
