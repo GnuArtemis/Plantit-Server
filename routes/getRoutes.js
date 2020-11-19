@@ -90,13 +90,13 @@ router.get("/plants", (req, res) => {
 router.get("/plants/search/:query", (req, res) => {
   db.Plant.find({ $text: { $search: req.params.query } })
     .then(results => {
-      // console.log(results)
+      console.log(results)
       if (results.length===0) {
-        // console.log("no plant")
+        console.log("no plant")
         return res.send(null)
         //Where you get the option to add a plant
       } else {
-        // console.log("found some plants")
+        console.log("found some plants")
         res.json(results)
       }
     })
