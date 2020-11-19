@@ -16,6 +16,7 @@ mongoose.connect(process.env.MONGODB_URI || "mongodb://localhost/dbPlantit", {
 //routes
 app.use(require('./routes/getRoutes.js'));
 app.use(require('./routes/postRoutes.js'));
+app.use(require('./routes/editRoutes.js'))
 app.use(require('./routes/userRoutes.js'))
 
 // app.use(cors(
