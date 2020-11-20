@@ -38,15 +38,20 @@ const PlantSchema = new Schema({
     // growth.description
     growth: String,
     //growth.ph_maximum, growth.ph_minimum
-    ph: [Number],
+    ph_min: Number,
+    ph_max: Number,
     //growth.minimum_precipitation, growth.maximum_precipitation
-    watering: [Number],
+    watering_min: Number,
+    watering_max: Number,
     //growth.minimum_temperature.deg_f, growth.maximum_temperature.deg_f
-    temperature: [Number],
+    temperature_min: Number,
+    temperature_max: Number,
     //growth.light
     light: Number,
     //growth.sowing OR all the growth soil_
-    sowing: [],
+    sowing: String,
+    soil_nutriments: Number,
+    soil_texture:Number,
     //WHERE sources.name === USDA
     sources: [],
     //growth.growth_months
