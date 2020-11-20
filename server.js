@@ -5,12 +5,15 @@ const cors = require("cors")
 
 const app = express();
 const PORT = process.env.PORT || 3001;
-
+app.use(cors())
 app.use(express.urlencoded({ limit: '200mb',extended: true }));
 app.use(express.json({ limit: '200mb',extended: true }));
 
+app.use(express.static("public"));
+
 mongoose.connect(process.env.MONGODB_URI || "mongodb://localhost/dbPlantit", {
     useNewUrlParser: true,
+    useFindAndModify: false
 })
 
 //routes
@@ -23,7 +26,7 @@ app.use(require('./routes/userRoutes.js'))
 //     // {origin:["http://localhost:3000"]}
 //     ))
 
-app.use(cors())
+
 
 app.listen(PORT, function () {
     console.log(`Now listening on port: ${PORT}`);
