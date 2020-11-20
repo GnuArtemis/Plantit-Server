@@ -11,6 +11,7 @@ app.use(express.json({ limit: '200mb',extended: true }));
 
 mongoose.connect(process.env.MONGODB_URI || "mongodb://localhost/dbPlantit", {
     useNewUrlParser: true,
+    useFindAndModify: false
 })
 
 //routes
