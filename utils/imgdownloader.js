@@ -9,6 +9,7 @@ const URL_BASE = 'http://localhost:3001/'
 ============================================================ */
 
 const downloadImage = (url, name) => {
+  if(url === null) return new Promise((resolve,reject)=>resolve(null))
   return axios({
     url,
     responseType: 'stream',
