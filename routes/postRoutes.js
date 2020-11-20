@@ -4,6 +4,7 @@ const db = require("../models");
 const API = require("../utils/API");
 const jwt = require("jsonwebtoken")
 const cors = require("cors")
+const downloader = require('../utils/imgdownloader')
 
 router.use(cors())
 
@@ -22,9 +23,17 @@ router.post("/user", (req, res) => {
     const token = jwt.sign(userInfo, process.env.JWT_SECRET, { expiresIn: "2h" });
     return res.status(200).json({ token: token, userInfo})
   })
-  .catch(err => {
-    return res.status(404).json({err})
-  })
+  .catch(async err => {
+    const isEmail = await db.User.findOne({email: req.body.email})
+    const isUsername = await db.User.findOne({username: req.body.username})
+      if (isEmail) {
+        return res.status(422).send({err: "invalid email"})
+      } else if (isUsername) {
+          return res.status(403).send({err: "invalid username"})
+        } else {
+          return res.status(404).send(err)
+        }
+      })
 })
 
 router.post("/myplants/create", (req, res) => {
@@ -71,28 +80,32 @@ router.post("/token", (req, res) => {
 router.post("/api/slug/:query/:usertoken", (req, res) => {
   API.searchSlug(req.params.query, req.params.usertoken)
     .then((result) => {
+      
       plantData = result.data.data;
-      // console.log(plantData)
-      db.Plant.create({
-        common_name: plantData.common_name,
-        scientific_name: plantData.scientific_name,
-        growth_habit: plantData.specifications.growth_habit,
-        slug: plantData.slug,
-        other_names: plantData.common_names.en,
-        image_url: plantData.image_url,
-        native: plantData.distribution.native,
-        average_height: plantData.specifications.average_height.cm,
-        toxicity: plantData.specifications.toxicity,
-        growth: plantData.growth.description,
-        ph: [plantData.growth.ph_maximum, plantData.growth.ph_minimum],
-        watering: [plantData.growth.minimum_precipitation.mm, plantData.growth.maximum_precipitation.mm],
-        temperature: [plantData.growth.minimum_temperature.deg_f, plantData.growth.maximum_temperature.deg_f],
-        light: plantData.growth.light,
-        sowing: [plantData.growth.sowing, plantData.growth.soil_nutriments, plantData.growth.soil_texture],
-        sources: plantData.sources,
-        growth_months: plantData.growth.growth_months
-      })
+      downloader.downloadImage(plantData.image_url,plantData.slug).then(imgURL => {
+
+        
+        db.Plant.create({
+          common_name: plantData.common_name,
+          scientific_name: plantData.scientific_name,
+          growth_habit: plantData.specifications.growth_habit,
+          slug: plantData.slug,
+          other_names: plantData.common_names.en,
+          image_url: imgURL,
+          native: plantData.distribution.native,
+          average_height: plantData.specifications.average_height.cm,
+          toxicity: plantData.specifications.toxicity,
+          growth: plantData.growth.description,
+          ph: [plantData.growth.ph_maximum, plantData.growth.ph_minimum],
+          watering: [plantData.growth.minimum_precipitation.mm, plantData.growth.maximum_precipitation.mm],
+          temperature: [plantData.growth.minimum_temperature.deg_f, plantData.growth.maximum_temperature.deg_f],
+          light: plantData.growth.light,
+          sowing: [plantData.growth.sowing, plantData.growth.soil_nutriments, plantData.growth.soil_texture],
+          sources: plantData.sources,
+          growth_months: plantData.growth.growth_months
+        })
         .then(dbPlant => { res.send(dbPlant) }, err => { res.status(500).send(err) })
+      })
     })
     .catch((err) => {
       res.json(err)

@@ -89,7 +89,7 @@ router.get("/plants", (req, res) => {
 router.get("/plants/search/:query", (req, res) => {
   db.Plant.find({ $text: { $search: req.params.query } })
     .then(results => {
-      // console.log(results)
+      console.log(results)
       if (results.length===0) {
         console.log("no plant")
         return res.send(null)
@@ -132,7 +132,7 @@ router.get("/user/:id", (req, res) => {
   .populate("myPlants")
   .lean().then(dbUsers => {
     res.json(dbUsers)
-    console.log(dbUsers)
+    // console.log(dbUsers)
   })
   .catch(err => {
     console.log(err)
