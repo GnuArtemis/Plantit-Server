@@ -2,9 +2,7 @@ const { Db } = require("mongodb");
 const axios = require("axios")
 const router = require("express").Router();
 const db = require("../models");
-const API = require("../utils/API")
 const cors = require("cors")
-const mongoose = require("mongoose")
 
 router.use(cors())
 
@@ -13,6 +11,14 @@ router.put("/myplants/delete", (req,res) => {
     })
     .lean().then(dbUser => {
         res.json(dbUser)
+    })
+})
+
+router.put("/plant/edit",(req,res)=>{
+    db.Plant.findByIdAndUpdate(req.body.plantId,{
+        toxicity: req.body.toxicity
+    }).lean().then(dbPlant => {
+        res.json(dbPlant)
     })
 })
 
