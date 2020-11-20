@@ -132,7 +132,7 @@ router.get("/user/:id", (req, res) => {
   .populate("myPlants")
   .lean().then(dbUsers => {
     res.json(dbUsers)
-    console.log(dbUsers)
+    // console.log(dbUsers)
   })
   .catch(err => {
     console.log(err)
