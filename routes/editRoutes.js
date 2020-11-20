@@ -9,7 +9,7 @@ const mongoose = require("mongoose")
 router.use(cors())
 
 router.put("/myplants/delete", (req,res) => {
-    db.User.findByIdAndUpdate(req.body.userId,{$pull:{myPlants: req.body.plantId}
+    db.User.findByIdAndUpdate(req.body.userID,{$pull:{myPlants: req.body.plantID}
     })
     .lean().then(dbUser => {
         res.json(dbUser)
