@@ -22,9 +22,17 @@ router.post("/user", (req, res) => {
     const token = jwt.sign(userInfo, process.env.JWT_SECRET, { expiresIn: "2h" });
     return res.status(200).json({ token: token, userInfo})
   })
-  .catch(err => {
-    return res.status(404).json({err})
-  })
+  .catch(async err => {
+    const isEmail = await db.User.findOne({email: req.body.email})
+    const isUsername = await db.User.findOne({username: req.body.username})
+      if (isEmail) {
+        return res.status(422).send({err: "invalid email"})
+      } else if (isUsername) {
+          return res.status(403).send({err: "invalid username"})
+        } else {
+          return res.status(404).send(err)
+        }
+      })
 })
 
 router.post("/myplants/create", (req, res) => {
