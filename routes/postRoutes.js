@@ -45,6 +45,15 @@ router.post("/myplants/create", (req, res) => {
     err => { res.status(500).send(err) })
 })
 
+router.post("/location", (req, res) => {
+  db.User.findOneAndUpdate(
+    { _id: req.body.userId }, 
+    { $push: { location: req.body.location } }, 
+    { new: true }
+    ).then(dbLocation => { res.send(dbLocation) },
+    err => { res.status(500).send(err) })
+})
+
 router.post("/plant", (req, res) => {
   db.Plant.create({
     common_name: req.body.common_name,
