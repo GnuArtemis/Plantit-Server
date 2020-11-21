@@ -63,7 +63,15 @@ router.post("/login", async (req, res) => {
 })
 
 
-
+router.get("/user/gardenimgs", (req,res) => {
+    db.User.find({}).lean().then(users => {
+        const data = users.map(user => {user.username,user.myGardenImg})
+        res.json(data)
+    }).catch(err => {
+        console.log("error in /user/gardenimgs")
+        res.status(500)
+    })
+})
 
 
 router.put("/user/:id/garden", (req,res) => {
