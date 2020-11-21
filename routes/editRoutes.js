@@ -42,4 +42,11 @@ router.put("/comment/edit",(req,res)=> {
     })
 })
 
+router.delete("/comment/delete/:commentId",(req,res)=> {
+    db.Comment.findByIdAndDelete(req.params.commentId)
+    .lean().then(dbComment => {
+        res.json(dbComment)
+    })
+})
+
 module.exports = router;
