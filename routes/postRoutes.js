@@ -18,6 +18,9 @@ router.post("/user", (req, res) => {
         myPlants: dbUser.myPlants,
         myGarden: dbUser.myGarden,
         myGardenImg: dbUser.myGardenImg,
+        location: dbUser.location,
+        skills: dbUser.skills,
+        interests: dbUser.interests,
         userToken: API.fetchToken()
       }
       const token = jwt.sign(userInfo, process.env.JWT_SECRET, { expiresIn: "2h" });
@@ -42,15 +45,6 @@ router.post("/myplants/create", (req, res) => {
     { $push: { myPlants: req.body.plantId } },
     { new: true }
   ).then(dbmyPlants => { res.send(dbmyPlants) },
-    err => { res.status(500).send(err) })
-})
-
-router.post("/location", (req, res) => {
-  db.User.findOneAndUpdate(
-    { _id: req.body.userId }, 
-    { $push: { location: req.body.location } }, 
-    { new: true }
-    ).then(dbLocation => { res.send(dbLocation) },
     err => { res.status(500).send(err) })
 })
 

@@ -62,10 +62,6 @@ router.post("/login", async (req, res) => {
       });
 })
 
-
-
-
-
 router.put("/user/:id/garden", (req,res) => {
     
         db.User.findOneAndUpdate({ _id: req.params.id }, {myGarden:req.body.myGarden,myGardenImg:req.body.myGardenImg})
@@ -78,5 +74,34 @@ router.put("/user/:id/garden", (req,res) => {
     
 })
 
+router.put("/user/:id/location", (req,res) => {
+    db.User.findOneAndUpdate({_id: req.params.id }, {location: req.body.location})
+    .then((result) => {
+        return res.json(result)
+    })
+    .catch((err) => {
+        return res.json(err)
+    })
+})
+
+router.put("/user/:id/interests", (req,res) => {
+    db.User.findOneAndUpdate({_id: req.params.id }, {interests: req.body.interests})
+    .then((result) => {
+        return res.json(result)
+    })
+    .catch((err) => {
+        return res.json(err)
+    })
+})
+
+router.put("/user/:id/skills", (req,res) => {
+    db.User.findOneAndUpdate({_id: req.params.id }, {skills: req.body.skills})
+    .then((result) => {
+        return res.json(result)
+    })
+    .catch((err) => {
+        return res.json(err)
+    })
+})
 
 module.exports = router;
