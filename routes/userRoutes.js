@@ -68,7 +68,19 @@ router.post("/login", async (req, res) => {
 
 router.put("/user/:id/garden", (req,res) => {
     
-        db.User.findOneAndUpdate({ _id: req.params.id }, {myGarden:req.body.myGarden,myGardenImg:req.body.myGardenImg})
+        db.User.findOneAndUpdate({ _id: req.params.id }, {myGarden:req.body.myGarden})
+            .then((result) => {
+             return res.json(result)
+        })
+         .catch((err) => {
+            return res.json(err)
+        })
+    
+})
+
+router.put("/user/:id/gardenimg", (req,res) => {
+    
+        db.User.findOneAndUpdate({ _id: req.params.id }, {myGardenImg:req.body.myGardenImg})
             .then((result) => {
              return res.json(result)
         })
