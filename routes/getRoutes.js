@@ -41,11 +41,6 @@ router.get('/findByComments',(req, res) => {
   })
 })
 
-// router.get("/test", (req, res) => {
-//   axios.get("https://trefle.io/api/v1/species/sorbus-aucuparia?token=eyJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjo5MzczLCJvcmlnaW4iOiJodHRwOi8vbG9jYWxob3N0OjMwMDAvIiwiaXAiOm51bGwsImV4cGlyZSI6IjIwMjAtMTEtMTQgMDU6MDg6MTYgKzAwMDAiLCJleHAiOjE2MDUzMzA0OTZ9.lAGSUrloI3sOj-Z-7mHwxhkjkaPTJGLayoE53b85IZI")
-//     .then(response => res.send(response.data))
-//     .catch(err => res.json(err))
-// })
 
 // Get all plants from Trefle
 router.get("/allplants/:usertoken", (req, res) => {
@@ -146,12 +141,3 @@ router.get("/api/gardenimgs", (req,res) => {
 })
 
 module.exports = router;
-
-
-// Get all plants in database- get names
-// Get plants by search
-// Load existing information comments for plant (from table of comments associated with User and Plant)
-// Create new user
-// Log in with existing account
-// Allow user to save plants to My Plants
-// Load user plants
