@@ -7,7 +7,7 @@ const cors = require("cors");
 const API = require("../utils/API");
 require("dotenv").config()
 
-router.use(cors())
+router.use(cors( {origin: ["http://localhost:3000","https://plantit-site.herokuapp.com"]} ))
 
 // Checks user authentication
 const checkAuthStatus = (request, res) => {
@@ -31,7 +31,7 @@ router.post("/login", async (req, res) => {
     db.User.findOne({email: req.body.email})
       .then(async foundUser => {
           if (!foundUser) {
-            return res.status(404).send("USER NOT FOUND")
+            return res.status(404).send("user not found")
           } else {
             return { samePassword: await bcrypt.compare(req.body.password, foundUser.password), 
                     foundUser }
@@ -54,27 +54,62 @@ router.post("/login", async (req, res) => {
          }
       }) 
       .catch(function(error){
-        //   console.log(error)
           console.log("Error authenticating user: ");
       });
 })
-    
-// Gets My Plants with user authentication
 
-router.get("/myplants", (req, res) => {
-    const loggedInUser = checkAuthStatus(req)
-    if (!loggedInUser) {
-        return res.status(401).send("invalid token")
-    } else {
-        db.User.find({ username: loggedInUser.username })
+router.put("/user/:id/garden", (req,res) => {
+    
+        db.User.findOneAndUpdate({ _id: req.params.id }, {myGarden:req.body.myGarden})
             .then((result) => {
              return res.json(result)
-         })
+        })
          .catch((err) => {
             return res.json(err)
         })
-    }
-  })
+    
+})
 
+router.put("/user/:id/gardenimg", (req,res) => {
+    
+        db.User.findOneAndUpdate({ _id: req.params.id }, {myGardenImg:req.body.myGardenImg})
+            .then((result) => {
+             return res.json(result)
+        })
+         .catch((err) => {
+            return res.json(err)
+        })
+    
+})
+
+router.put("/user/:id/location", (req,res) => {
+    db.User.findOneAndUpdate({_id: req.params.id }, {location: req.body.location})
+    .then((result) => {
+        return res.json(result)
+    })
+    .catch((err) => {
+        return res.json(err)
+    })
+})
+
+router.put("/user/:id/interests", (req,res) => {
+    db.User.findOneAndUpdate({_id: req.params.id }, {interests: req.body.interests})
+    .then((result) => {
+        return res.json(result)
+    })
+    .catch((err) => {
+        return res.json(err)
+    })
+})
+
+router.put("/user/:id/skills", (req,res) => {
+    db.User.findOneAndUpdate({_id: req.params.id }, {skills: req.body.skills})
+    .then((result) => {
+        return res.json(result)
+    })
+    .catch((err) => {
+        return res.json(err)
+    })
+})
 
 module.exports = router;
