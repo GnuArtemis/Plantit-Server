@@ -4,7 +4,7 @@ const router = require("express").Router();
 const db = require("../models");
 const cors = require("cors")
 
-router.use(cors())
+router.use(cors( {origin: ["http://localhost:3000","https://plantit-site.herokuapp.com"]} ))
 
 router.put("/myplants/delete", (req,res) => {
     db.User.findByIdAndUpdate(req.body.userID,{$pull:{myPlants: req.body.plantID}

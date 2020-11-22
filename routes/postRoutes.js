@@ -6,7 +6,7 @@ const jwt = require("jsonwebtoken")
 const cors = require("cors")
 const downloader = require('../utils/imgdownloader')
 
-router.use(cors())
+router.use(cors( {origin: ["http://localhost:3000","https://plantit-site.herokuapp.com"]} ))
 
 router.post("/user", (req, res) => {
   db.User.create({ email: req.body.email, password: req.body.password, username: req.body.username, userToken: API.fetchToken() })
@@ -75,7 +75,6 @@ router.post("/token", (req, res) => {
   // The parameters for our POST request
   API.fetchToken()
     .then(response => {
-      // console.log(response.data)
       res.json(response.data)
     }, err => res.send(err));
 })
@@ -88,7 +87,6 @@ router.post("/api/slug/:query/:usertoken", (req, res) => {
       plantData = result.data.data;
       const distribution = plantData.distribution.native ? plantData.distribution.native : []; 
       const name = plantData.common_name ? plantData.common_name : plantData.scientific_name;
-      console.log(plantData)
       downloader.downloadImage(plantData.image_url, plantData.slug).then(imgURL => {
         db.Plant.create({
           common_name: name,
@@ -115,7 +113,7 @@ router.post("/api/slug/:query/:usertoken", (req, res) => {
           growth_months: plantData.growth.growth_months
         })
           .then(dbPlant => { res.send(dbPlant) }, err => { 
-            console.log(err); res.status(500).send(err) })
+            res.status(500).send(err) })
       })
     })
     .catch((err) => {

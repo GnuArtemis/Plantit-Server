@@ -7,12 +7,11 @@ const cors = require("cors");
 const API = require("../utils/API");
 require("dotenv").config()
 
-router.use(cors())
+router.use(cors( {origin: ["http://localhost:3000","https://plantit-site.herokuapp.com"]} ))
 
 // Checks user authentication
 const checkAuthStatus = (request, res) => {
     if (!request.headers.authorization) {
-        console.log("no user")
         return false
     }
     const token = request.headers.authorization.split(" ")[1]
@@ -32,7 +31,6 @@ router.post("/login", async (req, res) => {
     db.User.findOne({email: req.body.email})
       .then(async foundUser => {
           if (!foundUser) {
-            console.error("user not found")
             return res.status(404).send("user not found")
           } else {
             return { samePassword: await bcrypt.compare(req.body.password, foundUser.password), 
@@ -41,7 +39,6 @@ router.post("/login", async (req, res) => {
       })
       .then(function(validUser) {
           if(!validUser.samePassword) {
-              console.error("wrong password")
               res.status(403).send("wrong password");
           } else {
               const userInfo = {
@@ -57,7 +54,6 @@ router.post("/login", async (req, res) => {
          }
       }) 
       .catch(function(error){
-        //   console.log(error)
           console.log("Error authenticating user: ");
       });
 })
