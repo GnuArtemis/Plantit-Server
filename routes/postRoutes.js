@@ -86,15 +86,18 @@ router.post("/api/slug/:query/:usertoken", (req, res) => {
     .then((result) => {
 
       plantData = result.data.data;
+      const distribution = plantData.distribution.native ? plantData.distribution.native : []; 
+      const name = plantData.common_name ? plantData.common_name : plantData.scientific_name;
+      console.log(plantData)
       downloader.downloadImage(plantData.image_url, plantData.slug).then(imgURL => {
         db.Plant.create({
-          common_name: plantData.common_name,
+          common_name: name,
           scientific_name: plantData.scientific_name,
           growth_habit: plantData.specifications.growth_habit,
           slug: plantData.slug,
           other_names: plantData.common_names.en,
           image_url: imgURL,
-          native: plantData.distribution.native,
+          native: distribution,
           average_height: plantData.specifications.average_height.cm,
           toxicity: plantData.specifications.toxicity,
           growth: plantData.growth.description,
@@ -111,7 +114,8 @@ router.post("/api/slug/:query/:usertoken", (req, res) => {
           sources: plantData.sources,
           growth_months: plantData.growth.growth_months
         })
-          .then(dbPlant => { res.send(dbPlant) }, err => { res.status(500).send(err) })
+          .then(dbPlant => { res.send(dbPlant) }, err => { 
+            console.log(err); res.status(500).send(err) })
       })
     })
     .catch((err) => {

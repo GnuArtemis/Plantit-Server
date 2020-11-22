@@ -153,6 +153,17 @@ router.get("/myplants/:id", (req, res) => {
   }
 })
 
+router.get("/api/gardenimgs", (req,res) => {
+  db.User.find({}).lean().then(users => {
+    const data = users.map(user => {
+      return {username:user.username,myGardenImg:user.myGardenImg}
+    })
+      res.json(data)
+  }).catch(err => {
+      console.log("error in /user/gardenimgs")
+      res.status(500)
+  })
+})
 
 module.exports = router;
 
