@@ -107,20 +107,10 @@ router.get("/api/slug/:query/:usertoken/info", (req, res) => {
     })
 })
 
-//needs to be updated with user login key
-router.get("/myplants", (req, res) => {
-  db.User.find({ User: "1" }, { myPlants: 1 })
-    .then((result) => {
-      res.json(result)
-    })
-    .catch((err) => {
-      res.json(err)
-    })
-})
 
 router.get("/user/:id", (req, res) => {
-  // db.User.create({email: "test@test.test", password: "password"});
   db.User.findById(req.params.id)
+  .select("username email myPlants myGarden myGardenImg location skills interests")
   .populate("myPlants")
   .lean().then(dbUsers => {
     res.json(dbUsers)
