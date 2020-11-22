@@ -15,7 +15,6 @@ const API = {
     },
 
     formatSearchResults: function ({ data }) {
-        // console.log(data)
         const allData = [];
         data.forEach(element => {
             const dataFormatted = {};

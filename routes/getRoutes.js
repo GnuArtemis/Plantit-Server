@@ -6,7 +6,7 @@ const API = require("../utils/API")
 const cors = require("cors")
 const mongoose = require("mongoose")
 
-router.use(cors())
+router.use(cors( {origin: ["http://localhost:3000","https://plantit-site.herokuapp.com"]} ))
 
 
 router.get("/plant/:slug", (req, res) => {
@@ -37,7 +37,6 @@ router.get('/findByComments',(req, res) => {
 ])
   .limit(3)
   .then(dbComment => {
-    console.log(dbComment)
     res.send(dbComment)
   })
 })
@@ -50,10 +49,8 @@ router.get('/findByComments',(req, res) => {
 
 // Get all plants from Trefle
 router.get("/allplants/:usertoken", (req, res) => {
-  console.log("Inside get route");
   API.getAllPlants(req.params.usertoken)
   .then((result) => {
-    console.log("Inside the API call");
     res.json(result.data)
   })
     .catch((err) => {
@@ -63,7 +60,6 @@ router.get("/allplants/:usertoken", (req, res) => {
 
 // Search Trefle API for plant
 router.get("/api/search/:query/:usertoken/:page", (req, res) => {
-  console.log(req.params.usertoken)
 
   API.searchPlant(req.params.query, req.params.usertoken, req.params.page).then((result) => {
     const dataFormatted = API.formatSearchResults(result.data);
@@ -89,13 +85,9 @@ router.get("/plants", (req, res) => {
 router.get("/plants/search/:query", (req, res) => {
   db.Plant.find({ $text: { $search: req.params.query } })
     .then(results => {
-      console.log(results)
       if (results.length===0) {
-        console.log("no plant")
         return res.send(null)
-        //Where you get the option to add a plant
       } else {
-        console.log("found some plants")
         res.json(results)
       }
     })
@@ -132,10 +124,9 @@ router.get("/user/:id", (req, res) => {
   .populate("myPlants")
   .lean().then(dbUsers => {
     res.json(dbUsers)
-    // console.log(dbUsers)
   })
   .catch(err => {
-    console.log(err)
+    res.send(err)
   })
 })
 
@@ -146,7 +137,7 @@ router.get("/myplants/:id", (req, res) => {
     .lean().then(user => {
       res.json(user.myPlants)
     }).catch(err => {
-      console.log(err)
+      res.send(err)
     })
   } else {
     return res.status(404).send("user not found")
@@ -160,7 +151,6 @@ router.get("/api/gardenimgs", (req,res) => {
     })
       res.json(data)
   }).catch(err => {
-      console.log("error in /user/gardenimgs")
       res.status(500)
   })
 })
