@@ -52,7 +52,7 @@ Janelle-Deane, Matt-Weber, Ann Guinee, Maria Waslick and Caitlin Bouroncle
 Feel free to reach out to me either on my github or email. 
   
 Github:
-https://github.com/Janelle-Deane, https://github.com/Matt-Weber, https://github.com/Ann Guinee, https://github.com/Maria Waslick and https://github.com/Caitlin Bouroncle
+https://github.com/Janelle-Deane, https://github.com/Matt-Weber, https://github.com/GnuArtemis, https://github.com/Maria-Waslick and https://github.com/Caitlin-Bouroncle
    
 Email:
-janelle.m.deane@gmail.com
+janelle.m.deane@gmail.com, annmguinee@gmail.com
