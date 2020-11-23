@@ -1,3 +1,6 @@
+// Trefle requires JWT tokens to avoid exposing keys. These routes take a
+// trefle token from the front end and use it in order to display searces on the front end.
+
 const axios = require("axios");
 
 const API = {

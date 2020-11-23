@@ -1,4 +1,4 @@
-const { Db } = require("mongodb");
+// Routes that retrieve data for display
 const axios = require("axios")
 const router = require("express").Router();
 const db = require("../models");
@@ -8,7 +8,7 @@ const mongoose = require("mongoose")
 
 router.use(cors( {origin: ["http://localhost:3000","https://plantit-site.herokuapp.com"]} ))
 
-
+// For the "plant details" page. Retrieves all information about the plant, including comments.
 router.get("/plant/:slug", (req, res) => {
   db.Plant.findOne({ slug: req.params.slug })
     .then(dbPlant => {
@@ -23,6 +23,7 @@ router.get("/plant/:slug", (req, res) => {
     }, err => { res.send(err) });
 })
 
+// For the featured plants. Finds the plants with the most comments, limited to the top 3.
 router.get('/findByComments',(req, res) => {
   db.Comment
   .aggregate([
@@ -91,7 +92,7 @@ router.get("/plants/search/:query", (req, res) => {
     })
 })
 
-// Get info from API using the slug key
+// Get info from API using the slug key and the front end token
 router.get("/api/slug/:query/:usertoken/info", (req, res) => {
   API.searchSlug(req.params.query, req.params.usertoken)
     .then(result => {
@@ -102,7 +103,7 @@ router.get("/api/slug/:query/:usertoken/info", (req, res) => {
     })
 })
 
-
+// Finds user information by ID
 router.get("/user/:id", (req, res) => {
   db.User.findById(req.params.id)
   .select("username email myPlants myGarden myGardenImg location skills interests")
@@ -115,6 +116,7 @@ router.get("/user/:id", (req, res) => {
   })
 })
 
+// Finds the favorite plants of a user
 router.get("/myplants/:id", (req, res) => {
   if (req.params.id) {
     db.User.findById(req.params.id)
@@ -129,6 +131,7 @@ router.get("/myplants/:id", (req, res) => {
   }
 })
 
+// Retrieves garden images for the gallery
 router.get("/api/gardenimgs", (req,res) => {
   db.User.find({}).lean().then(users => {
     const data = users.map(user => {

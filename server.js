@@ -1,10 +1,11 @@
+// Server setup, with a mongo database and a external site.
+
 const express = require('express');
 const mongoose = require("mongoose");
-const apiGetRoutes = require('./routes/getRoutes')
 const cors = require("cors")
 const compression = require("compression");
 
-
+// Configuration
 const app = express();
 const PORT = process.env.PORT || 3001;
 app.use(cors())
@@ -14,7 +15,7 @@ app.use(compression());
 
 app.use(express.static("public"));
 
-
+// Mongo database connection
 mongoose.connect(process.env.MONGODB_URI || "mongodb://localhost/dbPlantit", {
     useNewUrlParser: true,
     useFindAndModify: false
@@ -27,7 +28,7 @@ app.use(require('./routes/editRoutes.js'))
 app.use(require('./routes/userRoutes.js'))
 
 
-
+// Starts the server
 app.listen(PORT, function () {
     console.log(`Now listening on port: ${PORT}`);
 });

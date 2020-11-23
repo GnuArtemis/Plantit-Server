@@ -1,4 +1,5 @@
-const { Db } = require("mongodb");
+// Routes used for editing/deleting data
+
 const axios = require("axios")
 const router = require("express").Router();
 const db = require("../models");
@@ -14,6 +15,7 @@ router.put("/myplants/delete", (req,res) => {
     })
 })
 
+// Edits a plant after the "double check information" feature
 router.put("/plant/edit",(req,res)=>{
     db.Plant.findByIdAndUpdate(req.body.plantId,{
         growth_habit: req.body.growth_habit,
@@ -35,6 +37,7 @@ router.put("/plant/edit",(req,res)=>{
     })
 })
 
+// Edits comments
 router.put("/comment/edit",(req,res)=> {
     db.Comment.findByIdAndUpdate(req.body.commentId, {$set: {commentText: req.body.commentUpdate}})
     .lean().then(dbComment => {
@@ -42,6 +45,7 @@ router.put("/comment/edit",(req,res)=> {
     })
 })
 
+// Deletes comments
 router.delete("/comment/delete/:commentId",(req,res)=> {
     db.Comment.findByIdAndDelete(req.params.commentId)
     .lean().then(dbComment => {

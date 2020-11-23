@@ -8,6 +8,7 @@ const downloader = require('../utils/imgdownloader')
 
 router.use(cors( {origin: ["http://localhost:3000","https://plantit-site.herokuapp.com"]} ))
 
+// Creates a new user after signing
 router.post("/user", (req, res) => {
   db.User.create({ email: req.body.email, password: req.body.password, username: req.body.username, userToken: API.fetchToken() })
     .then(dbUser => {
@@ -39,6 +40,7 @@ router.post("/user", (req, res) => {
     })
 })
 
+// Adds a plant to favorites
 router.post("/myplants/create", (req, res) => {
   db.User.findOneAndUpdate(
     { _id: req.body.userId },
@@ -48,17 +50,7 @@ router.post("/myplants/create", (req, res) => {
     err => { res.status(500).send(err) })
 })
 
-router.post("/plant", (req, res) => {
-  db.Plant.create({
-    common_name: req.body.common_name,
-    scientific_name: req.body.scientific_name,
-    growth_habit: req.body.growth_habit,
-    slug: req.body.slug
-  })
-    .then(dbPlant => { res.send(dbPlant) }, err => { res.status(500).send(err) })
-  /* jwt.sign to create token*/
-})
-
+// Creates a comment on a plant
 router.post("/comment", (req, res) => {
   db.Comment.create({
     commentText: req.body.commentText,
@@ -70,6 +62,7 @@ router.post("/comment", (req, res) => {
 
 })
 
+// Trefle requires JWT tokens in order to protect API keys. This route creates a new token
 router.post("/token", (req, res) => {
 
   // The parameters for our POST request
