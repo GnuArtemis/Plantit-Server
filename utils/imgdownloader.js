@@ -1,8 +1,8 @@
 const fs = require('fs');
 const axios = require('axios');
 
-const URL_BASE = 'http://localhost:3001/'
-// const URL_BASE = "https://plantit-server.herokuapp.com/"
+// const URL_BASE = 'http://localhost:3001/'
+const URL_BASE = "https://plantit-server.herokuapp.com/"
 
 /* ============================================================
   Function: Download Image
