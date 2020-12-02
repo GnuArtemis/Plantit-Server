@@ -4,6 +4,7 @@ const express = require('express');
 const mongoose = require("mongoose");
 const cors = require("cors")
 const compression = require("compression");
+require('dotenv').config()
 
 // Configuration
 const app = express();
