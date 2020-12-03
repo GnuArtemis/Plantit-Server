@@ -33,7 +33,7 @@ const API = {
     fetchToken: async function () {
 
         const params = {
-            origin: 'http://localhost:3000/',
+            origin: 'https://plantit-site.herokuapp.com/',
             // ip: user's api
             token: 'NpbVZNazanTbq6IdZi-WePXi9AGzuqXARezyDNnW2bA'
         }
