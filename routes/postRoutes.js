@@ -6,7 +6,7 @@ const jwt = require("jsonwebtoken")
 const cors = require("cors")
 const downloader = require('../utils/imgdownloader')
 
-router.use(cors( {origin: ["http://localhost:3000","https://plantit-site.herokuapp.com"]} ))
+router.use(cors({ origin: ["http://localhost:3000", "https://plantit-site.herokuapp.com"] }))
 
 // Creates a new user after signing
 router.post("/user", (req, res) => {
@@ -78,38 +78,45 @@ router.post("/api/slug/:query/:usertoken", (req, res) => {
     .then((result) => {
 
       plantData = result.data.data;
-      const distribution = plantData.distribution.native ? plantData.distribution.native : []; 
+      const distribution = plantData.distribution.native ? plantData.distribution.native : [];
       const name = plantData.common_name ? plantData.common_name : plantData.scientific_name;
-      downloader.downloadImage(plantData.image_url, plantData.slug).then(imgURL => {
-        db.Plant.create({
-          common_name: name,
-          scientific_name: plantData.scientific_name,
-          growth_habit: plantData.specifications.growth_habit,
-          slug: plantData.slug,
-          other_names: plantData.common_names.en,
-          image_url: imgURL,
-          native: distribution,
-          average_height: plantData.specifications.average_height.cm,
-          toxicity: plantData.specifications.toxicity,
-          growth: plantData.growth.description,
-          ph_min: plantData.growth.ph_minimum,
-          ph_max: plantData.growth.ph_maximum,
-          watering_min: plantData.growth.minimum_precipitation.mm,
-          watering_max: plantData.growth.maximum_precipitation.mm,
-          temperature_min: plantData.growth.minimum_temperature.deg_f,
-          temperature_max: plantData.growth.maximum_temperature.deg_f,
-          light: plantData.growth.light,
-          sowing: plantData.growth.sowing,
-          soil_nutriments: plantData.growth.soil_nutriments,
-          soil_texture: plantData.growth.soil_texture,
-          sources: plantData.sources,
-          growth_months: plantData.growth.growth_months
-        })
-          .then(dbPlant => { res.send(dbPlant) }, err => { 
-            res.status(500).send(err) })
+      // console.log(name)
+      db.Plant.create({
+        common_name: name,
+        scientific_name: plantData.scientific_name,
+        growth_habit: plantData.specifications.growth_habit,
+        slug: plantData.slug,
+        other_names: plantData.common_names.en,
+        image_url: plantData.image_url,
+        native: distribution,
+        average_height: plantData.specifications.average_height.cm,
+        toxicity: plantData.specifications.toxicity,
+        growth: plantData.growth.description,
+        ph_min: plantData.growth.ph_minimum,
+        ph_max: plantData.growth.ph_maximum,
+        watering_min: plantData.growth.minimum_precipitation.mm,
+        watering_max: plantData.growth.maximum_precipitation.mm,
+        temperature_min: plantData.growth.minimum_temperature.deg_f,
+        temperature_max: plantData.growth.maximum_temperature.deg_f,
+        light: plantData.growth.light,
+        sowing: plantData.growth.sowing,
+        soil_nutriments: plantData.growth.soil_nutriments,
+        soil_texture: plantData.growth.soil_texture,
+        sources: plantData.sources,
+        growth_months: plantData.growth.growth_months
       })
+        .then(dbPlant => {
+          console.log("plant added")
+          res.send(dbPlant)
+          downloader.downloadImage(plantData.image_url, plantData.slug, dbPlant._id)
+        }).catch(err => {
+          console.log(err)
+          res.status(500).send(err)
+        })
     })
+
     .catch((err) => {
+      // console.log(err)
       res.json(err)
     })
 })
