@@ -1,3 +1,7 @@
+// Plant schema for the database. Includes some identifiers both for user purposes 
+// (common name, scientific name, and image) and trefle (slug). Additionally, contains 
+// a great deal of nonessential, useful information about each plant. 
+
 const mongoose = require("mongoose")
 
 const Schema = mongoose.Schema;

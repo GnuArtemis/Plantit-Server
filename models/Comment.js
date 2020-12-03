@@ -1,3 +1,5 @@
+// Comment schema for the database. Includes the content of the comment, user and plant associations, and timestamps.
+
 const mongoose = require("mongoose")
 
 const Schema = mongoose.Schema;

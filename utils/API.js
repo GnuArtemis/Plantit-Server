@@ -1,3 +1,6 @@
+// Trefle requires JWT tokens to avoid exposing keys. These routes take a
+// trefle token from the front end and use it in order to display searces on the front end.
+
 const axios = require("axios");
 
 const API = {
@@ -30,7 +33,7 @@ const API = {
     fetchToken: async function () {
 
         const params = {
-            origin: 'http://localhost:3000/',
+            origin: 'https://plantit-site.herokuapp.com/',
             // ip: user's api
             token: 'NpbVZNazanTbq6IdZi-WePXi9AGzuqXARezyDNnW2bA'
         }

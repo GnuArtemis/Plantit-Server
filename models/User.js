@@ -1,3 +1,6 @@
+// User schema for the database. Includes username, email, password, list of 
+// favorite plants, MyGarden information, and assorted personal information.
+
 const mongoose = require("mongoose")
 
 const bcrypt = require('bcrypt')
