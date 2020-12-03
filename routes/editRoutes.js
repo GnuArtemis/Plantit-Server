@@ -53,4 +53,11 @@ router.delete("/comment/delete/:commentId",(req,res)=> {
     })
 })
 
+router.delete("/myplants/reset/:userId",(req,res)=> {
+    db.User.findByIdAndUpdate(req.params.userId, {$set: {myPlants:[]}})
+    .lean().then(dbUser => {
+        res.send(dbUser)
+    })
+})
+
 module.exports = router;
